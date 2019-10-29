@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity
 } from "react-native";
+import Post_fashion from "./Post_fashion"
 import { Actions } from "react-native-router-flux";
 import { RectButton } from "react-native-gesture-handler";
 import SlideBar from "./SideBar"
@@ -22,6 +23,9 @@ import {
 } from "native-base";
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
 import { EvilIcons } from "@expo/vector-icons";
+
+
+
 const TYPES = ["front", "back", "back", "slide"];
 const PARALLAX = [true, true, true, true];
 
@@ -46,11 +50,16 @@ const Page = ({ openDrawer }) => (
 
     <View style={{ marginTop: 100 }}>
       <Text style={{justifyContent:'center', fontSize:20,marginLeft:120}}>The Posts</Text>
+      <Post_fashion/>
     </View>
   </View>
 );
 
 export default class Example extends Component {
+
+
+
+  
   state = { fromLeft: true, type: 0 };
 
   renderParallaxDrawer = progressValue => {

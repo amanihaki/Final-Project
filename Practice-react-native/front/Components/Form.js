@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dimensions from "Dimensions";
 import { Actions } from "react-native-router-flux";
-import GLOBAL from './Global.js'
+import  GLOBAL from "./Global"
 import {
   Text,
   StyleSheet,
@@ -15,7 +15,8 @@ import {
   Easing,
   Image,
   AsyncStorage,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 
 import UserInput from "./UserInput";
@@ -91,13 +92,19 @@ export default class Form extends Component {
     const data = await response.json();
     console.log("data", data);
     console.log("data.suc", data.success);
+    // const global= data.user.users_id
+    // GLOBAL.users_id=global
+    // console.log("global",GLOBAL.users_id)
     if (data.success) {
       AsyncStorage.setItem("user", JSON.stringify(data.user));
-      console.log("DATAAA>>>>",data)
+      let users_id = data.user[0].users_id
+      console.log(users_id)
+      // global.set_users_id(users_id)
       
-     const global= data.user.users_id
-      const global2=    GLOBAL.users_id=global
-      console.log("globa",global2)
+      // Alert(global.users_id) // return 1
+      GLOBAL.users_id=users_id
+      console.log(">>>>",GLOBAL.users_id)
+    
     }
     return data.success;
   };

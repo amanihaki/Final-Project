@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Actions } from "react-native-router-flux";
-import GLOBAL from './Global.js'
+import  GLOBAL from "./Global"
 import {
   View,
   Image,
@@ -47,7 +47,7 @@ export default class SignUp extends React.Component {
     });
     formData.append("title", this.state.title);
     formData.append("text", this.state.text);
-
+    formData.append("users_id", GLOBAL.users_id);
     console.log(formData);
     const response = await fetch("http://192.168.6.107:8080/post", {
       method: "POST",

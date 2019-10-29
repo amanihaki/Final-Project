@@ -137,8 +137,7 @@ const start = async () => {
         });
       } else {
         const second_query = 
-        `INSERT INTO Post (title,text,images_id,users_id) VALUES 
-        ('${title}','${text}',${query1.stmt.lastID}',${users_id}) `;
+        `INSERT INTO Post (title,text,images_id,users_id) VALUES ('${title}','${text}','${query1.stmt.lastID}','${users_id}') `;
         console.log(second_query);
         const query2 = await db.run(second_query);
         if (query2.length === 0) {
@@ -168,26 +167,26 @@ const start = async () => {
  * 
  * Post_fashion
  */
-// app.get("/fashion", async (req, res) => {
-//   const sql = `SELECT Cateogries.* ,Images.* , Post.*, Users.username,Users.avatar from Users 
-//   INNER JOIN Post ON Users.users_id = Post.users_id 
-//   INNER JOIN Cateogries ON Cateogries.cate_id = Post.cate_id 
-//   INNER JOIN Images ON Images.images_id = Post.images_id `;
-//   console.log(sql);
-//   try {
-//     const post= await db.all(sql);
-//     res.json({
-//       success: true,
-//       results: post
-//     });
-//     console.log(">>>>>>>", cate);
-//   } catch (e) {
-//     res.status("404").json({
-//       success: false,
-//       message: e.message
-//     });
-//   }
-// });
+app.get("/fashion", async (req, res) => {
+  const sql = `SELECT Cateogries.* ,Images.* , Post.*, Users.username,Users.avatar from Users 
+  INNER JOIN Post ON Users.users_id = Post.users_id 
+  INNER JOIN Cateogries ON Cateogries.cate_id = Post.cate_id 
+  INNER JOIN Images ON Images.images_id = Post.images_id `;
+  console.log(sql);
+  try {
+    const post= await db.all(sql);
+    res.json({
+      success: true,
+      results: post
+    });
+    console.log(">>>>>>>", cate);
+  } catch (e) {
+    res.status("404").json({
+      success: false,
+      message: e.message
+    });
+  }
+});
 
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Router, Scene, Actions, ActionConst } from "react-native-router-flux";
-import Head from "./Components/Header";
+import Head from "./Components/MainPost";
 import Profile from "./Components/Profile";
 import LoginScreen from "./Components/LoginScreen";
 import SecondScreen from "./Components/Categories";
