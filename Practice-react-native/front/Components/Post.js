@@ -3,6 +3,7 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Actions } from "react-native-router-flux";
+import GLOBAL from './Global.js'
 import {
   View,
   Image,
@@ -13,7 +14,8 @@ import {
   AsyncStorage,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Text
 } from "react-native";
 
 export default class SignUp extends React.Component {
@@ -70,9 +72,8 @@ export default class SignUp extends React.Component {
     } else {
       console.log("hsh");
       const signup_response = await this.SignUp();
-    
-      if (signup_response) {
 
+      if (signup_response) {
         Actions.Head();
       } else {
         alert("Please check your post");
@@ -99,7 +100,7 @@ export default class SignUp extends React.Component {
     const options = {
       noData: true
     };
-    let result = await ImagePicker.launchImageLibraryAsync(options);
+    let result = await ImagePicker.launchCameraAsync(options);
     console.log(result);
     if (result.uri) {
       this.setState({ post_images: result });
@@ -124,14 +125,14 @@ export default class SignUp extends React.Component {
           style = { styles.imageStyle } 
         
           /> */}
-          {post_images && (
+          {!post_images ? (
             <Image
-              source={
-                this.state.loadingImage
-                  ? { uri: post_images.uri } 
-                  :require("../assets/splash1.png")
-              }
-            
+              source={require("../assets/splash1.png")}
+              style={{ width: 100, height: 100 }}
+            />
+          ) : (
+            <Image
+              source={{ uri: post_images.uri }}
               style={{ width: 100, height: 100 }}
             />
           )}
@@ -145,6 +146,7 @@ export default class SignUp extends React.Component {
             placeholderTextColor="white"
             onChangeText={val => this.onChangeText("title", val)}
           />
+<Text>{GLOBAL.users_id}</Text>
           <TextInput
             style={styles.input}
             placeholder="TEXT"

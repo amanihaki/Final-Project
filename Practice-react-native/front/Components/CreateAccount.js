@@ -149,12 +149,15 @@ export default class SignUp extends React.Component {
           <TouchableOpacity>
             <Button title="Pick an image" onPress={this.pickImage} />
           </TouchableOpacity>
-          {avatar && (
+          {!avatar ?
             <Image
-              source={{ uri: avatar.uri }}
+              source={require("../assets/splash1.png")}
               style={{ width: 100, height: 100, borderRadius: 100 }}
             />
-          )}
+          :<Image
+          source={{ uri: avatar.uri }}
+          style={{ width: 100, height: 100, borderRadius: 100 }}
+        />}
         </View>
 
         <KeyboardAvoidingView style={{ marginTop: 10 }}>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Dimensions from "Dimensions";
 import { Actions } from "react-native-router-flux";
-
+import GLOBAL from './Global.js'
 import {
   Text,
   StyleSheet,
@@ -35,7 +35,8 @@ export default class Form extends Component {
       showPass: true,
       press: false,
       username: "",
-      password: ""
+      password: "",
+      users_id:""
     };
    
     this.buttonAnimated = new Animated.Value(0);
@@ -57,7 +58,7 @@ export default class Form extends Component {
       ? this.setState({ showPass: false, press: true })
       : this.setState({ showPass: true, press: false });
   }
-
+ 
   //   componentDidMount=()=>{
   //     this._loadInitinlState().done();
   //   }
@@ -83,7 +84,8 @@ export default class Form extends Component {
       },
       body: JSON.stringify({
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        
       })
     });
     const data = await response.json();
@@ -91,6 +93,11 @@ export default class Form extends Component {
     console.log("data.suc", data.success);
     if (data.success) {
       AsyncStorage.setItem("user", JSON.stringify(data.user));
+      console.log("DATAAA>>>>",data)
+      
+     const global= data.user.users_id
+      const global2=    GLOBAL.users_id=global
+      console.log("globa",global2)
     }
     return data.success;
   };

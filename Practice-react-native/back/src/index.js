@@ -115,7 +115,7 @@ const start = async () => {
    */
 
   app.post("/post", upload.single("post_images"), async (req, res, next) => {
-    const { title, text } = req.body;
+    const { title, text,users_id } = req.body;
     const image = req.file && req.file.filename;
     console.log(req.body);
     if (!title || !text || !image) {
@@ -136,8 +136,9 @@ const start = async () => {
           message: "Please check your images"
         });
       } else {
-        const second_query = `INSERT INTO Post (title,text,images_id,users_id) VALUES 
-        ('${title}','${text}',${query1.stmt.lastID}',) `;
+        const second_query = 
+        `INSERT INTO Post (title,text,images_id,users_id) VALUES 
+        ('${title}','${text}',${query1.stmt.lastID}',${users_id}) `;
         console.log(second_query);
         const query2 = await db.run(second_query);
         if (query2.length === 0) {
