@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Actions } from "react-native-router-flux";
+import Dimensions from "Dimensions";
 import {
   StyleSheet,
   Text,
@@ -18,8 +19,7 @@ export default class Post_fashion extends Component {
     this.state = {
       post: {
         results: []
-      },
-      imageUri:""
+      }
     };
   }
 
@@ -29,8 +29,7 @@ export default class Post_fashion extends Component {
       let res = await data.json();
       console.log("data", res.results);
       this.setState({
-        post: res,
-        imageUri:res.results[0].images_name
+        post: res
       });
     } catch (err) {
       console.log(err);
@@ -39,20 +38,49 @@ export default class Post_fashion extends Component {
 
   render() {
     return (
-      <View>
-        {this.state.post.results.map((item, key) => (
-          <View key={key}>
-            <Text>{item.username}</Text>
-            <Text>{item.title}</Text>
-            <Text>{item.text}</Text>
-            <Image
-              source={{ uri: `http://192.168.6.107:8080/${item.images_name}` }}
-              
-              style={{ width: 100, height: 100 }}
-            />
-          </View>
-        ))}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+
+          alignItems: "center"
+        }}
+      >
+        {this.state.post.results.map((item, key) => {
+          console.log(
+            "image url - ",
+            `http://192.168.6.107:8080/images/${item.avatar}`
+          );
+          return (
+            <View key={key} style={{ marginVertical: 20 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Image
+                  source={{
+                    uri: `http://192.168.6.107:8080/images/${item.avatar}`
+                  }}
+                  style={{ width: 50, height: 50, borderRadius: 30 }}
+                />
+                <Text style={{ padding: 10, fontWeight: "800", fontSize: 17 }}>
+                  {item.username}
+                </Text>
+              </View>
+              <Text style={{ marginVertical: 10 }}>{item.text}</Text>
+              <Image
+                source={{
+                  uri: `http://192.168.6.107:8080/images/${item.images_name}`
+                }}
+                style={{ width: 300, height: 200 }}
+              />
+            </View>
+          );
+        })}
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  image: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width / 2
+  }
+});

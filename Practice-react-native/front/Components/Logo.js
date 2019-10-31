@@ -32,6 +32,7 @@ export default class Logo extends Component {
               position: "absolute"
             }}
           />
+          
         </View>
       </View>
     );

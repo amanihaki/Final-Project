@@ -5,12 +5,12 @@ import {
   Text,
   Animated,
   View,
- ScrollView
+  ScrollView
 } from "react-native";
-import Post_fashion from "./Post_fashion"
+import Post_fashion from "./Post_fashion";
 import { Actions } from "react-native-router-flux";
 import { RectButton } from "react-native-gesture-handler";
-import SlideBar from "./SideBar"
+import SlideBar from "./SideBar";
 import {
   Container,
   Header,
@@ -24,13 +24,11 @@ import {
 import DrawerLayout from "react-native-gesture-handler/DrawerLayout";
 import { EvilIcons } from "@expo/vector-icons";
 
-
-
 const TYPES = ["front", "back", "back", "slide"];
 const PARALLAX = [true, true, true, true];
 
 const Page = ({ openDrawer }) => (
-  <View style={styles.page}>
+  <View style={{ backgroundColor: "#fff" }}>
     {/* <Container> */}
     <Header style={{ height: 60, width: "100%" }}>
       <Left>
@@ -49,17 +47,15 @@ const Page = ({ openDrawer }) => (
     </Header>
 
     <ScrollView style={{ marginTop: 10 }}>
-      <Text style={{justifyContent:'center', fontSize:20,marginLeft:120}}>The Posts</Text>
-      <Post_fashion/>
+      <Text style={{ justifyContent: "center", fontSize: 20, marginLeft: 120 }}>
+        The Posts
+      </Text>
+      <Post_fashion />
     </ScrollView>
   </View>
 );
 
 export default class Example extends Component {
-
-
-
-  
   state = { fromLeft: true, type: 0 };
 
   renderParallaxDrawer = progressValue => {
@@ -72,11 +68,7 @@ export default class Example extends Component {
     };
     return (
       <Animated.View style={[styles.drawerContainer, animatedStyles]}>
-        {/* <Text style={styles.drawerText}>I am in the drawer!</Text>
-        <Text style={styles.drawerText}>
-          Watch parallax animation while you pull the drawer!
-        </Text> */}
-        <SlideBar/>
+        <SlideBar />
       </Animated.View>
     );
   };
@@ -93,7 +85,6 @@ export default class Example extends Component {
           drawerWidth={200}
           keyboardDismissMode="on-drag"
           drawerType={drawerType}
-          drawerBackgroundColor="#ddd"
           overlayColor={"#00000000"}
           renderNavigationView={this.renderParallaxDrawer}
           contentContainerStyle={

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { AppRegistry, Image, StatusBar } from "react-native";
+import GLOBAL from "./Global";
 import {
   Button,
   Text,
@@ -10,10 +12,46 @@ import {
   Icon,
   View
 } from "native-base";
-import logo from "./Logo"
+
 import Logo from "./Logo";
 const routes = ["Home", "Chat", "Profile"];
 export default class SideBar extends React.Component {
+
+
+ 
+    constructor(props) {
+      super(props);
+      this.state = {
+        users:{
+          results:[]
+        }
+        }
+    }
+   
+    componentDidMount = async () => {
+    try{  let formData = new FormData();
+      formData.append("users_id", GLOBAL.users_id);
+      let data = await fetch("http://192.168.6.107:8080/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+      body: formData
+    });
+
+    
+        let res = await data.json();
+        console.log("data", res.results);
+        this.setState({
+          users: res
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+
+
   render() {
     return (
       <Container>
@@ -22,7 +60,42 @@ export default class SideBar extends React.Component {
               width: "100%",
               alignSelf: "stretch",
               position: "absolute"}}>
-            <Logo />
+            {/* <Logo /> */}
+
+               {/* {this.state.users.results.map((item,index)=>{
+                 <View key={index}>
+
+                   <Text>{item.username}</Text>
+                   <Image
+                  source={{
+                    uri: `http://192.168.6.107:8080/images/${item.avatar}`
+                  }}
+                  style={{ width: 50, height: 50, borderRadius: 30 }}
+                />
+                 </View>
+                } )} */}
+                 {this.state.users.results.map((item, key) => {
+          console.log(
+            "image url - ",
+            `http://192.168.6.107:8080/images/${item.avatar}`
+          );
+          return (
+            <View key={key} style={{ marginVertical: 20 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Image
+                  source={{
+                    uri: `http://192.168.6.107:8080/images/${item.avatar}`
+                  }}
+                  style={{ width: 50, height: 50, borderRadius: 30 }}
+                />
+                <Text style={{ padding: 10, fontWeight: "800", fontSize: 17 }}>
+                  {item.username}
+                </Text>
+              </View>
+              
+            </View>
+          );
+        })}
             </View>
           {/* <Image
             source={{

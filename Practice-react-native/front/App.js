@@ -18,7 +18,7 @@ export default class Main extends Component {
             component={LoginScreen}
             animation="fade"
              hideNavBar={true}
-            initial={true}
+             initial={true}
            
           />
           <Scene
@@ -56,13 +56,14 @@ export default class Main extends Component {
             animation="fade"
             hideNavBar={false}
             title="Post_Fashion"
+            
           />
           <Scene
             key="Head"
             component={Head}
             animation="fade"
             hideNavBar={true}
-           
+         
           />
         </Scene>
       </Router>

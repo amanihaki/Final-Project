@@ -26,7 +26,7 @@ const start = async () => {
   /**
    * Login
    */
- 
+
   app.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -35,7 +35,8 @@ const start = async () => {
         message: "there is noo login"
       });
     }
-    const query = SQL`SELECT username ,password,users_id FROM Users WHERE username = ${username} AND password = ${password}`;
+    const query = SQL`SELECT username ,password,users_id FROM Users
+     WHERE username = ${username} AND password = ${password}`;
     const student = await db.all(query);
     if (student.length === 0) {
       res.json({
@@ -45,8 +46,7 @@ const start = async () => {
     } else {
       res.json({
         success: true,
-        user: student,
-      
+        user: student
       });
     }
   });
@@ -94,14 +94,13 @@ const start = async () => {
    */
   app.get("/cetegories", async (req, res) => {
     const sql = "SELECT * FROM Cateogries";
-  
+
     try {
       const cate = await db.all(sql);
       res.json({
         success: true,
         results: cate
       });
-      
     } catch (e) {
       res.status("404").json({
         success: false,
@@ -115,7 +114,7 @@ const start = async () => {
    */
 
   app.post("/post", upload.single("post_images"), async (req, res, next) => {
-    const { title, text,users_id } = req.body;
+    const { title, text, users_id } = req.body;
     const image = req.file && req.file.filename;
     console.log(req.body);
     if (!title || !text || !image) {
@@ -136,8 +135,7 @@ const start = async () => {
           message: "Please check your images"
         });
       } else {
-        const second_query = 
-        `INSERT INTO Post (title,text,images_id,users_id) VALUES ('${title}','${text}','${query1.stmt.lastID}','${users_id}') `;
+        const second_query = `INSERT INTO Post (title,text,images_id,users_id) VALUES ('${title}','${text}','${query1.stmt.lastID}','${users_id}') `;
         console.log(second_query);
         const query2 = await db.run(second_query);
         if (query2.length === 0) {
@@ -146,12 +144,11 @@ const start = async () => {
             message: "Please check your post"
           });
         }
-             
+
         res.json({
           success: true,
           first_query: query1.stmt.lastID,
-          second_query: query2.stmt.lastID,
-         
+          second_query: query2.stmt.lastID
         });
       }
     } catch (err) {
@@ -161,45 +158,59 @@ const start = async () => {
     next();
   });
 
- 
-/**
- * 
- * Post_fashion
- */
+  /**
+   *
+   * Post_fashion
+   */
 
-app.get("/fashion", async (req, res) => {
-  const sql = `SELECT Cateogries.* ,Images.* , Post.*, Users.username,Users.avatar from Users 
+  app.get("/fashion", async (req, res) => {
+    const sql = `SELECT Cateogries.* ,Images.* , Post.*, Users.username,Users.avatar from Users 
   INNER JOIN Post ON Users.users_id = Post.users_id 
   INNER JOIN Cateogries ON Cateogries.cate_id = Post.cate_id 
   INNER JOIN Images ON Images.images_id = Post.images_id `;
-  
-  try {
-    const post= await db.all(sql);
-    res.json({
-      success: true,
-      results: post
-    });
-    console.log(">>>>>>>", post);
-  } catch (e) {
-    res.status("404").json({
-      success: false,
-      message: e.message
-    });
-    console.log("errrrrorr", e.message)
-  }
-});
 
+    try {
+      const post = await db.all(sql);
+      res.json({
+        success: true,
+        results: post
+      });
+      console.log(">>>>>>>", post);
+    } catch (e) {
+      res.status("404").json({
+        success: false,
+        message: e.message
+      });
+      console.log("errrrrorr", e.message);
+    }
+  });
 
+  /**
+   *
+   * Users
+   */
 
+  app.get("/users", async (req, res) => {
+    const { users_id } = req.body;
+    const sql = `SELECT  Users.username,Users.avatar from Users Where Users.users_id =${users_id} `;
 
+    try {
+      const user = await db.all(sql);
+      res.json({
+        success: true,
+        results: user
+      });
+      console.log(">>>>>>>", user);
+    } catch (e) {
+      res.status("404").json({
+        success: false,
+        message: e.message
+      });
+      console.log("errrrrorr", e.message);
+    }
+  });
 
-
-
-
-
-
-app.listen(8080, () => console.log("server listening on port 8080"));
+  app.listen(8080, () => console.log("server listening on port 8080"));
 };
-
 
 start();
