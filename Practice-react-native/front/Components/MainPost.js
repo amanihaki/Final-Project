@@ -5,7 +5,7 @@ import {
   Text,
   Animated,
   View,
-  TouchableOpacity
+ ScrollView
 } from "react-native";
 import Post_fashion from "./Post_fashion"
 import { Actions } from "react-native-router-flux";
@@ -48,10 +48,10 @@ const Page = ({ openDrawer }) => (
       </Right>
     </Header>
 
-    <View style={{ marginTop: 100 }}>
+    <ScrollView style={{ marginTop: 10 }}>
       <Text style={{justifyContent:'center', fontSize:20,marginLeft:120}}>The Posts</Text>
       <Post_fashion/>
-    </View>
+    </ScrollView>
   </View>
 );
 

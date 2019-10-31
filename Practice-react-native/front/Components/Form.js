@@ -18,11 +18,6 @@ import {
   TextInput,
   Alert
 } from "react-native";
-
-import UserInput from "./UserInput";
-import ButtonSubmit from "./ButtonSubmit";
-import SignupSection from "./SignupSection";
-
 import usernameImg from "../assets/username.png";
 import passwordImg from "../assets/password.png";
 import eyeImg from "../assets/eye_black.png";

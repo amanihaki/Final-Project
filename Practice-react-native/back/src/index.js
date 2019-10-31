@@ -94,14 +94,14 @@ const start = async () => {
    */
   app.get("/cetegories", async (req, res) => {
     const sql = "SELECT * FROM Cateogries";
-    console.log(sql);
+  
     try {
       const cate = await db.all(sql);
       res.json({
         success: true,
         results: cate
       });
-      console.log(">>>>>>>", cate);
+      
     } catch (e) {
       res.status("404").json({
         success: false,
@@ -161,35 +161,45 @@ const start = async () => {
     next();
   });
 
-  app.listen(8080, () => console.log("server listening on port 8080"));
-};
+ 
 /**
  * 
  * Post_fashion
  */
+
 app.get("/fashion", async (req, res) => {
   const sql = `SELECT Cateogries.* ,Images.* , Post.*, Users.username,Users.avatar from Users 
   INNER JOIN Post ON Users.users_id = Post.users_id 
   INNER JOIN Cateogries ON Cateogries.cate_id = Post.cate_id 
   INNER JOIN Images ON Images.images_id = Post.images_id `;
-  console.log(sql);
+  
   try {
     const post= await db.all(sql);
     res.json({
       success: true,
       results: post
     });
-    console.log(">>>>>>>", cate);
+    console.log(">>>>>>>", post);
   } catch (e) {
     res.status("404").json({
       success: false,
       message: e.message
     });
+    console.log("errrrrorr", e.message)
   }
 });
 
 
 
+
+
+
+
+
+
+
+app.listen(8080, () => console.log("server listening on port 8080"));
+};
 
 
 start();

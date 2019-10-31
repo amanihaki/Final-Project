@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Actions } from "react-native-router-flux";
-import  GLOBAL from "./Global"
+import GLOBAL from "./Global";
 import {
   View,
   Image,
@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Text
+  Alert
 } from "react-native";
 
 export default class SignUp extends React.Component {
@@ -100,7 +100,7 @@ export default class SignUp extends React.Component {
     const options = {
       noData: true
     };
-    let result = await ImagePicker.launchCameraAsync(options);
+    let result = await ImagePicker.launchImageLibraryAsync(options);
     console.log(result);
     if (result.uri) {
       this.setState({ post_images: result });
@@ -114,17 +114,7 @@ export default class SignUp extends React.Component {
           <TouchableOpacity>
             <Button title="Pick an image" onPress={this.pickImage} />
           </TouchableOpacity>
-          {/* <Image 
-          source = { this.state.loadingImage 
-          ? 
-          { uri: 'https://reactnativecode.com/wp-content/uploads/2017/10/Guitar.jpg' } 
-          : 
-           require('../assets/splash1.png')}
-            style = {{height: 100, width: 150} } 
-                
-          style = { styles.imageStyle } 
-        
-          /> */}
+
           {!post_images ? (
             <Image
               source={require("../assets/splash1.png")}
@@ -146,7 +136,7 @@ export default class SignUp extends React.Component {
             placeholderTextColor="white"
             onChangeText={val => this.onChangeText("title", val)}
           />
-<Text>{GLOBAL.users_id}</Text>
+
           <TextInput
             style={styles.input}
             placeholder="TEXT"
