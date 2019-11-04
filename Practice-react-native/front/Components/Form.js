@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Dimensions from "Dimensions";
 import { Actions } from "react-native-router-flux";
 import  GLOBAL from "./Global"
@@ -8,15 +7,12 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   View,
-  ActivityIndicator,
-  Button,
   TouchableOpacity,
   Animated,
   Easing,
   Image,
   AsyncStorage,
   TextInput,
-  Alert
 } from "react-native";
 import usernameImg from "../assets/username.png";
 import passwordImg from "../assets/password.png";
@@ -87,16 +83,10 @@ export default class Form extends Component {
     const data = await response.json();
     console.log("data", data);
     console.log("data.suc", data.success);
-    // const global= data.user.users_id
-    // GLOBAL.users_id=global
-    // console.log("global",GLOBAL.users_id)
     if (data.success) {
       AsyncStorage.setItem("user", JSON.stringify(data.user));
       let users_id = data.user[0].users_id
       console.log(users_id)
-      // global.set_users_id(users_id)
-      
-      // Alert(global.users_id) // return 1
       GLOBAL.users_id=users_id
       console.log(">>>>",GLOBAL.users_id)
     
@@ -126,7 +116,7 @@ export default class Form extends Component {
       }, 2000);
   
       setTimeout(() => {
-        Actions.secondScreen();
+        Actions.Home();
         this.setState({isLoading: false});
         this.buttonAnimated.setValue(0);
         this.growAnimated.setValue(0);

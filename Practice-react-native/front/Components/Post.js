@@ -74,6 +74,7 @@ export default class SignUp extends React.Component {
       const signup_response = await this.SignUp();
 
       if (signup_response) {
+        Alert("Posted Successfully");
         Actions.Head();
       } else {
         alert("Please check your post");

@@ -7,12 +7,13 @@ import {
   View,
   ScrollView
 } from "react-native";
-import Post_fashion from "./Post_fashion";
+import PostsSelect from "./PostsSelect";
 import { Actions } from "react-native-router-flux";
 import { RectButton } from "react-native-gesture-handler";
 import SlideBar from "./SideBar";
+
 import {
-  Container,
+
   Header,
   Left,
   Body,
@@ -29,7 +30,6 @@ const PARALLAX = [true, true, true, true];
 
 const Page = ({ openDrawer }) => (
   <View style={{ backgroundColor: "#fff" }}>
-    {/* <Container> */}
     <Header style={{ height: 60, width: "100%" }}>
       <Left>
         <RectButton onPress={openDrawer}>
@@ -37,7 +37,7 @@ const Page = ({ openDrawer }) => (
         </RectButton>
       </Left>
       <Body>
-        <Text style={{ fontSize: 20, color: "white" }}> Vehicles</Text>
+        <Text style={{ fontSize: 20, color: "white" }}> Electronics</Text>
       </Body>
       <Right>
         <Button transparent onPress={Actions.post}>
@@ -50,7 +50,7 @@ const Page = ({ openDrawer }) => (
       <Text style={{ justifyContent: "center", fontSize: 20, marginLeft: 120 }}>
         The Posts
       </Text>
-      <Post_fashion />
+      {/* <PostsSelect/> */}
     </ScrollView>
   </View>
 );
@@ -82,7 +82,7 @@ export default class Example extends Component {
           ref={drawer => {
             this.drawer = drawer;
           }}
-          drawerWidth={200}
+          drawerWidth={230}
           keyboardDismissMode="on-drag"
           drawerType={drawerType}
           overlayColor={"#00000000"}

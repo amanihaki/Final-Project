@@ -149,15 +149,17 @@ export default class SignUp extends React.Component {
           <TouchableOpacity>
             <Button title="Pick an image" onPress={this.pickImage} />
           </TouchableOpacity>
-          {!avatar ?
+          {!avatar ? (
             <Image
               source={require("../assets/splash1.png")}
               style={{ width: 100, height: 100, borderRadius: 100 }}
             />
-          :<Image
-          source={{ uri: avatar.uri }}
-          style={{ width: 100, height: 100, borderRadius: 100 }}
-        />}
+          ) : (
+            <Image
+              source={{ uri: avatar.uri }}
+              style={{ width: 100, height: 100, borderRadius: 100 }}
+            />
+          )}
         </View>
 
         <KeyboardAvoidingView style={{ marginTop: 10 }}>
@@ -206,26 +208,11 @@ const DEVICE_HEIGHT = Dimensions.get("window").height;
 const MARGIN = 40;
 const styles = StyleSheet.create({
   input: {
-    // width: 350,
-    // height: 55,
-    // backgroundColor: "#42A5F5",
-    // margin: 10,
-    // padding: 8,
-   
-    // borderRadius: 14
-    // fontSize: 18,
-    // fontWeight: "500",
     backgroundColor: "#42A5F5",
-   
     height: 40,
     marginBottom: 10,
     paddingLeft: 45,
     borderRadius: 20,
     color: "#ffffff"
   }
-  // container: {
-  //   flex: 1,
-  //   justifyContent: "center",
-  //   alignItems: "center"
-  // }
 });

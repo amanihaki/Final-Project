@@ -2,14 +2,9 @@ import React, { Component } from "react";
 
 import Logo from "./Logo.js"
 import {
-  StyleSheet,
+
   Text,
   View,
-  TouchableOpacity,
-  icon,
-  Alert,
-  ScrollView,
-  FlatList
 } from "react-native";
 
 export default class Post_fashion extends Component {

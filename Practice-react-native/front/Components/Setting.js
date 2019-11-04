@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default class Profile extends Component {
+export default class Setting extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -9,7 +9,7 @@ export default class Profile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Profile Page</Text>
+        <Text>Setting Page</Text>
       </View>
     );
   }
@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
-  }
+  },
+
 });

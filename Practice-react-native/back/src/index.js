@@ -190,8 +190,8 @@ const start = async () => {
    * Users
    */
 
-  app.get("/users", async (req, res) => {
-    const { users_id } = req.body;
+  app.get("/users/:users_id", async (req, res) => {
+    const { users_id } = req.params;
     const sql = `SELECT  Users.username,Users.avatar from Users Where Users.users_id =${users_id} `;
 
     try {
