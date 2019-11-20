@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Dimensions from "Dimensions";
 import { Actions } from "react-native-router-flux";
-import  GLOBAL from "./Global"
 import {
   Text,
   StyleSheet,
@@ -12,7 +11,7 @@ import {
   Easing,
   Image,
   AsyncStorage,
-  TextInput,
+  TextInput
 } from "react-native";
 import usernameImg from "../assets/username.png";
 import passwordImg from "../assets/password.png";
@@ -28,39 +27,37 @@ export default class Form extends Component {
       press: false,
       username: "",
       password: "",
-      users_id:""
+      users_id: ""
     };
-   
+
     this.buttonAnimated = new Animated.Value(0);
     this.growAnimated = new Animated.Value(0);
- 
-  
   }
 
-  _onGrow=()=> {
+  _onGrow = () => {
     Animated.timing(this.growAnimated, {
       toValue: 1,
       duration: 200,
-      easing: Easing.linear,
+      easing: Easing.linear
     }).start();
-  }
+  };
 
-  showPass=()=> {
+  showPass = () => {
     this.state.press === false
       ? this.setState({ showPass: false, press: true })
       : this.setState({ showPass: true, press: false });
-  }
- 
-  //   componentDidMount=()=>{
-  //     this._loadInitinlState().done();
-  //   }
+  };
 
-  // _loadInitinlState = async () =>{
-  //   let value = await AsyncStorage.getItem('user');
-  //   if(value !== null){
-  //     Actions.profile
-  //   }
-  // }
+    componentDidMount=()=>{
+      this._loadInitinlState().done();
+    }
+
+  _loadInitinlState = async () =>{
+    let value = await AsyncStorage.getItem('user');
+    if(value !== null){
+      Actions.profile
+    }
+  }
 
   /**
    *
@@ -68,7 +65,7 @@ export default class Form extends Component {
    */
 
   Login = async () => {
-    const response = await fetch("http://192.168.6.107:8080/login", {
+    const response = await fetch("http://192.168.1.60:8080/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -76,8 +73,7 @@ export default class Form extends Component {
       },
       body: JSON.stringify({
         username: this.state.username,
-        password: this.state.password,
-        
+        password: this.state.password
       })
     });
     const data = await response.json();
@@ -85,39 +81,31 @@ export default class Form extends Component {
     console.log("data.suc", data.success);
     if (data.success) {
       AsyncStorage.setItem("user", JSON.stringify(data.user));
-      let users_id = data.user[0].users_id
-      console.log(users_id)
-      GLOBAL.users_id=users_id
-      console.log(">>>>",GLOBAL.users_id)
-    
     }
     return data.success;
   };
 
- 
-
   _onPress = async () => {
-    console.log("hsh");
+    console.log("Loading");
     const login_response = await this.Login();
 
     if (login_response) {
-    
       if (this.state.isLoading) return;
 
-      this.setState({isLoading: true});
+      this.setState({ isLoading: true });
       Animated.timing(this.buttonAnimated, {
         toValue: 1,
         duration: 200,
-        easing: Easing.linear,
+        easing: Easing.linear
       }).start();
-  
+
       setTimeout(() => {
         this._onGrow();
       }, 2000);
-  
+
       setTimeout(() => {
         Actions.Home();
-        this.setState({isLoading: false});
+        this.setState({ isLoading: false });
         this.buttonAnimated.setValue(0);
         this.growAnimated.setValue(0);
       }, 2300);
@@ -129,11 +117,11 @@ export default class Form extends Component {
   render() {
     const changeWidth = this.buttonAnimated.interpolate({
       inputRange: [0, 1],
-      outputRange: [DEVICE_WIDTH - MARGIN, MARGIN],
+      outputRange: [DEVICE_WIDTH - MARGIN, MARGIN]
     });
     const changeScale = this.growAnimated.interpolate({
       inputRange: [0, 1],
-      outputRange: [1, MARGIN],
+      outputRange: [1, MARGIN]
     });
 
     return (
@@ -173,23 +161,24 @@ export default class Form extends Component {
           <Image source={eyeImg} style={styles.iconEye} />
         </TouchableOpacity>
 
-<View style={styles.contain}>
-        <Animated.View style={{width: changeWidth}}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this._onPress}
-            activeOpacity={1}>
-            {this.state.isLoading ? (
-              <Image source={spinner} style={styles.image} />
-            ) : (
-              <Text style={styles.text}>LOGIN</Text>
-            )}
-          </TouchableOpacity>
-          <Animated.View
-            style={[styles.circle, {transform: [{scale: changeScale}]}]}
-          />
-        </Animated.View>
-      </View>
+        <View style={styles.contain}>
+          <Animated.View style={{ width: changeWidth }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this._onPress}
+              activeOpacity={1}
+            >
+              {this.state.isLoading ? (
+                <Image source={spinner} style={styles.image} />
+              ) : (
+                <Text style={styles.text}>LOGIN</Text>
+              )}
+            </TouchableOpacity>
+            <Animated.View
+              style={[styles.circle, { transform: [{ scale: changeScale }] }]}
+            />
+          </Animated.View>
+        </View>
         {/* <Text onPress={this._onPress}>LOGIN</Text> */}
       </KeyboardAvoidingView>
     );
@@ -243,34 +232,34 @@ const styles = StyleSheet.create({
   contain: {
     flex: 1,
     top: -5,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    alignItems: "center",
+    justifyContent: "flex-start"
   },
   button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F035E0',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F035E0",
     height: MARGIN,
     borderRadius: 20,
-    zIndex: 100,
+    zIndex: 100
   },
   circle: {
     height: MARGIN,
     width: MARGIN,
     marginTop: -MARGIN,
     borderWidth: 1,
-    borderColor: '#F035E0',
+    borderColor: "#F035E0",
     borderRadius: 100,
-    alignSelf: 'center',
+    alignSelf: "center",
     zIndex: 99,
-    backgroundColor: '#F035E0',
+    backgroundColor: "#F035E0"
   },
   text: {
-    color: 'white',
-    backgroundColor: 'transparent',
+    color: "white",
+    backgroundColor: "transparent"
   },
   image: {
     width: 24,
-    height: 24,
-  },
+    height: 24
+  }
 });

@@ -3,7 +3,6 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import { Actions } from "react-native-router-flux";
-import GLOBAL from "./Global";
 import {
   View,
   Image,
@@ -14,8 +13,7 @@ import {
   AsyncStorage,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform,
-  Alert
+  Platform
 } from "react-native";
 
 export default class SignUp extends React.Component {
@@ -37,6 +35,7 @@ export default class SignUp extends React.Component {
     const uri = this.state.post_images.uri;
     const uriParts = uri.split(".");
     const fileName = uriParts[uriParts.length - 1];
+    const user = JSON.parse(await AsyncStorage.getItem("user"));
     formData.append("post_images", {
       name: `photo.${fileName}`,
       type: `image/${fileName}`,
@@ -47,9 +46,10 @@ export default class SignUp extends React.Component {
     });
     formData.append("title", this.state.title);
     formData.append("text", this.state.text);
-    formData.append("users_id", GLOBAL.users_id);
+    formData.append("users_id", user.users_id);
+    formData.append("cate_id", this.props.id);
     console.log(formData);
-    const response = await fetch("http://192.168.6.107:8080/post", {
+    const response = await fetch("http://192.168.1.60:8080/post", {
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data"
@@ -74,8 +74,8 @@ export default class SignUp extends React.Component {
       const signup_response = await this.SignUp();
 
       if (signup_response) {
-        Alert("Posted Successfully");
-        Actions.Head();
+        alert("Posted Successfully");
+        Actions.pop();
       } else {
         alert("Please check your post");
       }
@@ -99,9 +99,21 @@ export default class SignUp extends React.Component {
 
   pickImage = async () => {
     const options = {
-      noData: true
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    
+
     };
     let result = await ImagePicker.launchImageLibraryAsync(options);
+    console.log(result);
+    if (result.uri) {
+      this.setState({ post_images: result });
+    }
+  };
+  pickImage2 = async () => {
+    const options = {
+      noData: true
+    };
+    let result = await ImagePicker.launchCameraAsync(options);
     console.log(result);
     if (result.uri) {
       this.setState({ post_images: result });
@@ -113,7 +125,8 @@ export default class SignUp extends React.Component {
       <ScrollView style={{ padding: 30 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TouchableOpacity>
-            <Button title="Pick an image" onPress={this.pickImage} />
+            <Button title="Gallery" onPress={this.pickImage} />
+            <Button title="Camera Roll" onPress={this.pickImage2} />
           </TouchableOpacity>
 
           {!post_images ? (
@@ -128,7 +141,6 @@ export default class SignUp extends React.Component {
             />
           )}
         </View>
-
         <KeyboardAvoidingView style={{ marginTop: 60 }}>
           <TextInput
             style={styles.input}
@@ -141,7 +153,6 @@ export default class SignUp extends React.Component {
           <TextInput
             style={styles.input}
             placeholder="TEXT"
-            secureTextEntry={true}
             autoCapitalize="none"
             placeholderTextColor="white"
             onChangeText={val => this.onChangeText("text", val)}

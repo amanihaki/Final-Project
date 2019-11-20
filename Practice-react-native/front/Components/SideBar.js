@@ -2,51 +2,45 @@ import React from "react";
 import { AntDesign, EvilIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import GLOBAL from "./Global";
-// import { Actions } from "react-native-router-flux";
-import {
-  Text,
-  Container,
-  List,
-  ListItem,
-  Content,
-  View,
-  TouchableOpacity
-} from "native-base";
+import { AsyncStorage } from "react-native";
+import { Text, Container, List, ListItem, Content, View } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 const routes = [
-  { icon: "home", slide: "Home" },
-  { icon: "profile", slide: "Profile" },
-  { icon: "staro", slide: "Favorites" },
-  { icon: "wechat", slide: "Chats" },
-  { icon: "setting", slide: "Setting" },
-  { icon: "infocirlceo", slide: "About App" },
-  { icon: "logout", slide: "Log Out" }
+  { id: 1, icon: "home", slide: "Home" },
+  { id: 2, icon: "profile", slide: "Profile" },
+  { id: 3, icon: "staro", slide: "Favorites" },
+  { id: 4, icon: "wechat", slide: "Chats" },
+  { id: 5, icon: "setting", slide: "Setting" },
+  { id: 6, icon: "infocirlceo", slide: "About App" },
+  { id: 7, icon: "logout", slide: "Log Out" }
 ];
 export default class SideBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: {
-        results: []
-      }
+      users: []
     };
   }
 
   componentDidMount = async () => {
-    let data = await fetch(
-      `http://192.168.6.107:8080/users/${GLOBAL.users_id}`
-    );
+    const user = JSON.parse(await AsyncStorage.getItem("user"));
+    let data = await fetch(`http://192.168.1.60:8080/users/${user.users_id}`);
     try {
       let res = await data.json();
       console.log("data", res.results);
       this.setState({
-        users: res
+        users: res.results
       });
+      console.log("III", this.state.users);
     } catch (err) {
       console.log(err);
     }
+  };
+  _handleLogOut = () => {
+    AsyncStorage.removeItem("user");
+    alert("You have been logged out.");
+    Actions.loginScreen();
   };
 
   render() {
@@ -99,79 +93,47 @@ export default class SideBar extends React.Component {
               />
             </View>
 
-            {this.state.users.results.map((item, key) => {
-              console.log(
-                "image url - ",
-                `http://192.168.6.107:8080/images/${item.avatar}`
-              );
-              return (
-                <View key={key} style={{ marginVertical: 20 }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginHorizontal: 40,
-                      marginTop: 10
-                    }}
-                  >
-                    {/* <Image
-                      source={{
-                        uri: `http://192.168.6.107:8080/images/${item.avatar}`
-                      }}
-                      style={{ width: 50, height: 50, borderRadius: 30 }}
-                    /> */}
-                    <Text> Logged as </Text>
-                    <Text style={{ fontWeight: "800", fontSize: 17 }}>
-                      {item.username}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
+            <View style={{ marginVertical: 20 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: 40,
+                  marginTop: 10
+                }}
+              >
+                <Text> Logged as </Text>
+                <Text style={{ fontWeight: "800", fontSize: 17 }}>
+                  {this.state.users.username}
+                </Text>
+              </View>
+            </View>
           </View>
-          {/* <Image
-            source={{
-              uri:
-                "https://raw.githubusercontent.com/GeekyAnts/NativeBase-KitchenSink/master/assets/drawer-cover.png"
-            }}
-            style={{
-              height: 120,
-              width: "100%",
-              alignSelf: "stretch",
-              position: "absolute"
-            }}
-          />
-          <Image
-            square
-            style={{
-              height: 80,
-              width: 70,
-              position: "absolute",
-              alignSelf: "center",
-              top: 20
-            }}
-            source={{
-              uri:
-                "https://raw.githubusercontent.com/GeekyAnts/NativeBase-KitchenSink/master/assets/logo.png"
-            }}
-          /> */}
+
           <List
             dataArray={routes}
             contentContainerStyle={{
               marginTop: 120,
               marginLeft: 10
             }}
+            keyExtractor={data => data.id + ""}
             renderRow={data => {
               return (
-                <ListItem 
-                button onPress={Actions[data.slide]}>
-                  
-                  <View style={{ marginRight: 20 }}>
+                <ListItem
+                  button
+                  onPress={
+                    data.slide == "Log Out"
+                      ? this._handleLogOut
+                      : data.slide == "Chats"
+                      ? () => Actions.Chats({ id: this.state.users.users_id })
+                      : Actions[data.slide]
+                  }
+                >
+                  <View style={{ marginRight: 20 }} key={data.id}>
                     <AntDesign name={data.icon} style={{ fontSize: 30 }} />
                   </View>
                   <Text style={{ fontSize: 18, marginLeft: 20 }}>
                     {data.slide}
                   </Text>
-           
                 </ListItem>
               );
             }}

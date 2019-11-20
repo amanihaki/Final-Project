@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Dimensions from "Dimensions";
 import { StyleSheet, View, Text,TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
@@ -10,7 +9,7 @@ export default class SignupSection extends Component {
     return (
       <View style={styles.container}>
          <TouchableOpacity >
-          <Text onPress={Actions.createAccount} style={styles.text}>Create Account</Text>
+          <Text onPress={Actions.SignupScreen} style={styles.text}>Create Account</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Forgot Password?</Text>
       </View>
